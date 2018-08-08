@@ -1,0 +1,202 @@
+<div class="callout callout-info">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Crear Pregunta</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <form #questionForm="ngForm" (ngSubmit)="addQuestion($event)" role="form">
+                    <!-- text input -->
+                    <div class="form-group">
+                      <input name="inquiry" placeholder="Pregunta" class="form-control" type="text" #inquiry="ngModel" [(ngModel)]="question.question" required/> 
+                    </div>
+                    <!-- select -->
+                    <div class="form-group">
+                        <select id="selectbasic" name="typeQuestion" class="form-control" #typeQuestion="ngModel" [(ngModel)]="question.typeQuestion">
+                            <option value="" selected>Seleccionar tipo de pregunta</option>
+                            <option value="1">Respuesta breve</option>
+                            <option value="2">Parrafo</option>
+                            <option value="3">Seleccion simple</option>
+                            <option value="4">Seleccion multiple</option>
+                            <option value="5">Lista desplegable</option>
+                            <option value="6">Carga de archivos</option>
+                            <option value="7">Escala lineal</option>
+                            <option value="8">Cuadricula de opcion multiple</option>
+                            <option value="9">Caudricula de casillas de verificacion</option>
+                            <option value="10">Fecha</option>
+                            <option value="11">Hora</option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="question.typeQuestion == 1">
+                            
+                        <div class="form-group" >
+                            <label>
+                                <input type="radio" class="minimal" value="text" name="option" [(ngModel)]="question.choice" checked>
+                                Texto
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" class="minimal" value="numeric" name="option" [(ngModel)]="question.choice">
+                                Numerico
+                            </label>
+                        </div>
+                        <div>Selected Radio: {{question.choice}}</div>
+                    </div>
+                    <div *ngIf="question.typeQuestion == 1 && question.choice === 'numeric'">
+                        <div class="form-group" >
+                            <label>
+                                <input type="radio" name="r1" class="minimal" checked>
+                                Entero
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="r1" class="minimal">
+                                Decimal
+                            </label>
+                        </div>
+                    </div>
+                    <div *ngIf="question.typeQuestion == 3 || question.typeQuestion == 4">
+                            
+                        <div class="form-group" >
+                            <label>
+                                <input type="radio" class="minimal" value="vertical" name="option" [(ngModel)]="question.choice" checked>
+                                Vertical
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" class="minimal" value="horizontal" name="option" [(ngModel)]="question.choice">
+                                Horizontal
+                            </label>
+                        </div>
+                        <div>Selected Radio: {{question.choice}}</div>
+                    </div>
+                    <div *ngIf="question.typeQuestion == 5">
+                            
+                        <div class="form-group" >
+                            <label>
+                                <input type="radio" class="minimal" value="simple" name="option" [(ngModel)]="question.choice" checked>
+                                Simple
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" class="minimal" value="multiple" name="option" [(ngModel)]="question.choice">
+                                Multiple
+                            </label>
+                        </div>
+                        <div>Selected Radio: {{question.choice}}</div>
+                    </div>
+                    <div *ngIf="question.typeQuestion == 3 || question.typeQuestion == 4 || question.typeQuestion == 5">
+                        <div class="input-group">
+                            <input type="text" class="form-control" #answer (keyup.enter)="addHero(answer.value)" (blur)="addAnswer(answer.value); answer.value='' ">
+                            <span class="input-group-append">
+                                <button type="button" (click)="addAnswer(answer.value)" class="btn btn-info btn-flat">Agregar</button>
+                            </span>
+                        </div>
+                        <!--<ul class="todo-list" [dragula]='"list-answers"' [dragulaModel]='answers'>-->
+                        <ul class="todo-list">
+                            <li *ngFor="let answer of question.answers; let i = index" [attr.data-index]="i">
+                                <span class="handle">
+                                <i class="fa fa-ellipsis-v"></i>
+                                <i class="fa fa-ellipsis-v"></i>
+                                </span>
+                                <input type="checkbox" value="" name="">
+                                <span class="text">{{answer}}</span>
+                                <small class="badge badge-info"><i class="fa fa-clock-o"></i> 4 hours</small>
+                                <div class="tools">
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-trash-o" (click)="deleteAnswer(i)"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <input type="submit" value="Guardar Pregunta" class="btn btn-primary" [disabled]="!questionForm.form.valid"/>
+                  </form>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Vista Previa</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <form>
+                    <div class="form-group">
+                        {{question.inquiry}}
+                    </div>
+                    <div class="form-group" *ngIf="question.typeQuestion == 1">
+                        <input type="text" class="form-control" placeholder="Enter ...">
+                    </div>
+                    <div class="form-group" *ngIf="question.typeQuestion == 2">
+                        <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                    </div>
+                    <!-- radio -->
+                    <div *ngIf="question.typeQuestion == 3 && question.choice === 'vertical'">
+                        <div class="form-group" *ngFor="let answer of question.answers">
+                            <label>
+                                <input type="radio" class="minimal" value="text" name="textResponse">
+                                {{answer}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="question.typeQuestion == 3 && question.choice === 'horizontal'">
+                        <label *ngFor="let answer of question.answers">
+                            <input type="radio" name="r1" class="minimal">
+                            {{answer}}
+                        </label>
+                    </div>
+                    <div *ngIf="question.typeQuestion == 4 && question.choice === 'vertical'">
+                        <div class="form-group" *ngFor="let answer of question.answers">
+                            <label>
+                                <input type="checkbox" class="minimal">
+                                {{answer}}
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" *ngIf="question.typeQuestion == 4 && question.choice === 'horizontal'">
+                        <label *ngFor="let answer of question.answers">
+                            <input type="checkbox" class="minimal">
+                            {{answer}}
+                        </label>
+                    </div>
+                    <div class="form-group" *ngIf="question.typeQuestion == 5 && question.choice === 'simple'">
+                        <label>Select</label>
+                        <select class="form-control">
+                            <option>option 1</option>
+                            <option>option 2</option>
+                            <option>option 3</option>
+                            <option>option 4</option>
+                            <option>option 5</option>
+                        </select>
+                    </div>
+    
+                        <!-- Select multiple-->
+                    <div class="form-group" *ngIf="question.typeQuestion == 5 && question.choice === 'multiple'">
+                        <label>Select Multiple</label>
+                        <select multiple class="form-control">
+                            <option>option 1</option>
+                            <option>option 2</option>
+                            <option>option 3</option>
+                            <option>option 4</option>
+                            <option>option 5</option>
+                        </select>
+                    </div>
+                    
+                </form>
+                </div>
+                
+                <!-- /.card-body -->
+            </div>
+        </div>
+    </div>
+</div>

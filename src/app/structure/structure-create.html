@@ -1,0 +1,19 @@
+<div class="callout callout-info">
+    <form #structureForm="ngForm" (ngSubmit)="addStructure()" role="form">
+        <div class="row">
+            <div class="col-sm-12">
+                <!-- text input -->
+                <div class="form-group">
+                    <label>Título de plantilla</label>
+                    <input name="name" placeholder="Título de plantilla" class="form-control" type="text" #name="ngModel" [(ngModel)]="structure.name" required/> 
+                </div>
+            </div>
+        </div>
+        <button type="button" (click)="sQuestion()" class="btn btn-info btn-flat">Agregar una Pregunta</button>
+        <div *ngIf="showQuestion">
+            <question-create (returnQuestion)="responseQuestion($event)"></question-create>
+        </div>
+        <structure-questions (returnListQuestion)="responseListQuestion($event)"></structure-questions>
+        <input type="submit" value="Guardar Plantilla" class="btn btn-primary"/>
+    </form>
+</div>

@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Responsive Hover Table</h3>
+
+            <div class="card-tools">
+            <div class="input-group input-group-sm" style="width: 150px;">
+                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                <div class="input-group-append">
+                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+            </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover">
+            <tr>
+                <th>Pregunta</th>
+                <th></th>
+            </tr>
+            <tr *ngFor="let question of questions; let i = index;">
+                <td>
+                    <label>
+                        <input
+                        class="minimal"
+                        type="checkbox"
+                        id="question{{question.id}}"
+                        name="question"
+                        (change)="onCheckboxChange($event,question)"
+                        [checked]="question.checkbox"
+                        >
+                        {{question.question}}
+                    </label>
+                    
+                </td>
+                <td><i class="fa fa-eye"></i></td>
+            </tr>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <div class="col-6">
+        <!--<ul class="todo-list" [dragula]='"list-questions"' [dragulaModel]='questionsStructure'>-->
+        <ul class="todo-list">
+            <li *ngFor="let questionList of questionsStructure; let i = index;" [attr.data-index]="i">
+                <span class="handle">
+                <i class="fa fa-ellipsis-v"></i>
+                <i class="fa fa-ellipsis-v"></i>
+                </span>
+                <input type="checkbox" value="" name="">
+                <span class="text">{{questionList.question}}</span>
+                <small class="badge badge-info"><i class="fa fa-clock-o"></i> 4 hours</small>
+                <div class="tools">
+                <i class="fa fa-edit"></i>
+                <i class="fa fa-trash-o" (click)="deleteAnswer(i)"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div><!-- /.row -->
