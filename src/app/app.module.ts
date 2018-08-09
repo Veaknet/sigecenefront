@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatButtonModule, MatCheckboxModule, MatTableModule} from '@angular/material';
+import { MatPaginatorModule } from '@angular/material';
 //import { DragulaModule } from 'dragula';
 //import {HttpClient} from '@angular/common/http';
 
@@ -52,6 +53,8 @@ import { AdminComponent } from './layout/admin/admin.component';
     HttpModule,
     HttpClientModule,
     //DragulaModule,
+    MatTableModule,
+    MatPaginatorModule,
     routing
   ],
   providers: [
