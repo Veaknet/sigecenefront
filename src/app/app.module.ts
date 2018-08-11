@@ -8,6 +8,7 @@ import {MatButtonModule, MatCheckboxModule, MatTableModule} from '@angular/mater
 import { MatPaginatorModule, MatSortModule, MatIconModule } from '@angular/material';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material';
 //import { DragulaModule } from 'dragula';
 //import {HttpClient} from '@angular/common/http';
 
@@ -62,6 +63,7 @@ import { AdminComponent } from './layout/admin/admin.component';
     MatIconModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatInputModule,
     routing
   ],
   providers: [
