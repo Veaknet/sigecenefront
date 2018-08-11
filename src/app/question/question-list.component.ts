@@ -1,5 +1,6 @@
-import { NgModule, Component, OnInit, Output, Input, EventEmitter, ViewChild } from '@angular/core';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { NgModule, Component, OnInit, Output, Input, EventEmitter, ViewChild, Inject } from '@angular/core';
+import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { NgForm } from '@angular/forms';
 import { QuestionService } from './question.service';
 import { LoginService } from '../login/login.service';
@@ -14,6 +15,10 @@ export interface Element {
     /*answers: Array<string>,
     created_at: string,
     updated_at: string  */  
+}
+
+export interface DialogData {
+    animal: 'panda' | 'unicorn' | 'lion'; 
 }
 
 @Component({
@@ -33,6 +38,7 @@ export class QuestionListComponent implements OnInit{
     public token;
     
     @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
     //public page: number;
     columnNames = [{
         id: "question",
@@ -48,7 +54,8 @@ export class QuestionListComponent implements OnInit{
 
     constructor(
         private _questionService: QuestionService,
-        private _loginService: LoginService
+        private _loginService: LoginService,
+        public dialog: MatDialog
     ){
         //this.identity = this._loginService.getIdentity();
         this.token = this._loginService.getToken();
@@ -72,15 +79,20 @@ export class QuestionListComponent implements OnInit{
     getAllQuestions() {
         this._questionService.allQuestions(this.token.access_token)
         .subscribe(
-            questions => {
-                this.allQuestions = questions.data;
-                let tableArr: Element[] = this.allQuestions;
-                console.log('tableArr:', tableArr);
-                this.dataSource = new MatTableDataSource(tableArr);
-                this.dataSource.paginator = this.paginator;
-                console.log('result questions:', questions)
-                console.log(this.allQuestions);
-            });
+        questions => {
+            this.allQuestions = questions.data;
+            let tableArr: Element[] = this.allQuestions;
+            console.log('tableArr:', tableArr);
+            this.dataSource = new MatTableDataSource(tableArr);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+            console.log('result questions:', questions)
+            console.log(this.allQuestions);
+        });
+    }
+
+    editQuestion(id) {
+        console.log('id de pregunta para editar: ', id);
     }
 
     createTable() {
@@ -96,4 +108,30 @@ export class QuestionListComponent implements OnInit{
         this.dataSource = new MatTableDataSource(tableArr);
         //this.dataSource.sort = this.sort;
     }
+
+    openDialogView(id) {
+        this._questionService.getQuestion(this.token.access_token, id)
+        .subscribe(
+        response => {
+            let question = response.data;
+            console.log('response:', response);
+            this.dialog.open(DialogDataExampleDialog, {
+                data: question
+            });
+        });
+        
+    }
 }
+
+@Component({
+    selector: 'aqqquestion-create',
+    templateUrl: './question-view.html',
+  })
+  export class DialogDataExampleDialog {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+
+    ngOnInit() {
+        // will log the entire data object
+        console.log('this.data: ',this.data)
+      }
+  }

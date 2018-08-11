@@ -1,9 +1,17 @@
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table #table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <div *ngIf="column.id == 'accion'">
+            <mat-cell *matCellDef="let element">
+              <button (click)="editQuestion(element.id)">Edit</button>
+              <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>visibility</mat-icon></button>
+              <mat-icon (click)="editQuestion(element.id)">visibility</mat-icon>
+              <mat-icon (click)="editQuestion(element.id)">create</mat-icon> 
+              <mat-icon (click)="editQuestion(element.id)">restore_from_trash</mat-icon>
+            </mat-cell>
+          </div>
           <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
         </ng-container>
-
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>

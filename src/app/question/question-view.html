@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Esto es una pregunta</h2>
+
+<mat-dialog-content>
+        {{data.question}}
+        <form class="example-form">
+            <mat-form-field class="example-full-width" *ngIf="data.type == 1">
+                <input matInput placeholder="Favorite food" value="Sushi">
+            </mat-form-field>
+            
+            <mat-form-field class="example-full-width" *ngIf="data.type == 2">
+                <textarea matInput placeholder="Leave a comment"></textarea>
+            </mat-form-field>
+        </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">Close</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">Save</button>
+</mat-dialog-actions>

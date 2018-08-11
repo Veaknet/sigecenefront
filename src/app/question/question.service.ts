@@ -30,9 +30,7 @@ export class QuestionService {
                 type: question.typeQuestion,
                 choice: question.choice
             },
-            answers: question.answers
-
-            
+            answers: question.answers    
         }
         
         console.log('postData');
@@ -52,7 +50,7 @@ export class QuestionService {
     }
 
     allQuestions(accessToken: string) {    
-        let urlUser = this.url+"api/questions";
+        let urlQuestion = this.url+"api/questions";
 
         const httpOptions = {
             headers: new HttpHeaders({
@@ -61,6 +59,19 @@ export class QuestionService {
             })
         };
 
-        return this._http.get<any>(urlUser, httpOptions);
+        return this._http.get<any>(urlQuestion, httpOptions);
+    }
+
+    getQuestion(accessToken: string, id: number) {
+        let urlQuestion = this.url+"api/questions/"+id;
+        
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+                'Authorization': 'Bearer '+accessToken
+            })
+        };
+
+        return this._http.get<any>(urlQuestion, httpOptions);
     }
 }
