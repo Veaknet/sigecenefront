@@ -1,0 +1,51 @@
+<h2 mat-dialog-title class="mat-elevation-z">Esto es una pregunta</h2>
+<mat-dialog-content>
+    <mat-tab-group>
+        <mat-tab label="Crear Pregunta">
+            <div class="example-container">
+                <form #questionForm="ngForm" (ngSubmit)="editQuestion($event)" role="form">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Agregar pregunta" name="inquiry" #inquiry="ngModel" [(ngModel)]="data.question.question" required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-select placeholder="Tipo de pregunta" name="typeQuestion" #typeQuestion="ngModel" [(ngModel)]="data.question.type_question_id">
+                            <mat-option *ngFor="let type of data.typeQuestion" [value]="type.id">
+                            {{type.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-radio-group *ngIf="data.question.type_question_id == 3 || data.question.type_question_id == 4">
+                        <mat-radio-button value="1">Vertical</mat-radio-button>
+                        <mat-radio-button value="2">Horizontal</mat-radio-button>
+                    </mat-radio-group>
+                    <button class="mat-raised-button"(click)="close()">Close</button>
+                    <input type="submit" value="Guardar" class="mat-raised-button mat-primary" [disabled]="!questionForm.form.valid"/>
+                </form>
+            </div>
+        </mat-tab>
+        <mat-tab label="Vista Previa">
+            {{data.question.question}}
+            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 1">
+                <input matInput placeholder="Respuesta breve" disabled >
+            </mat-form-field>
+            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 2">
+                <textarea matInput placeholder="Leave a comment"></textarea>
+            </mat-form-field>
+            <mat-radio-group *ngIf="data.question.type_question_id == 3">
+                <mat-radio-button value="1">Option 1</mat-radio-button>
+                <mat-radio-button value="2">Option 2</mat-radio-button>
+            </mat-radio-group>
+            <section class="example-section" *ngIf="data.question.type_question_id == 4">
+                <mat-checkbox class="example-margin">Checked</mat-checkbox>
+                <mat-checkbox class="example-margin">Indeterminate</mat-checkbox>
+            </section>
+            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 5">
+                <mat-select placeholder="Favorite food">
+                    <mat-option *ngFor="let answer of data.question.answers" [value]="answer">
+                    {{answer}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>

@@ -1,32 +1,24 @@
-<div class="row">
-        <div class="col-12">
-            <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
-    
-                <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-    
-                    <div class="input-group-append">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover">
-                <tr>
-                    <th>Pregunta</th>
-                </tr>
-                <tr *ngFor="let structure of allStructures">
-                    <td>{{structure.name}}</td>
-                </tr>
-                </table>
-            </div>
-            <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
-    </div><!-- /.row -->
+<mat-card>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+    <button mat-raised-button [routerLink]="['/structurecreate']">Agregar Plantilla</button>
+    <div class="mat-elevation-z8">
+      <mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+          <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{background: 'indigo', color:'#FFF' }" > {{column.value}} </mat-header-cell>
+          <div *ngIf="column.id == 'accion'">
+            <mat-cell *matCellDef="let element">
+              <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>visibility</mat-icon></button>
+              <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>create</mat-icon></button> 
+              <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>restore_from_trash</mat-icon></button>
+            </mat-cell>
+          </div>
+          <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns" [ngStyle]="{background: 'indigo', color:'#FFF' }" ></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</mat-card>

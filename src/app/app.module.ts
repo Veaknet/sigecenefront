@@ -9,6 +9,13 @@ import { MatPaginatorModule, MatSortModule, MatIconModule } from '@angular/mater
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatListModule} from '@angular/material/list';
+import { ToastrModule } from 'ngx-toastr';
 //import { DragulaModule } from 'dragula';
 //import {HttpClient} from '@angular/common/http';
 
@@ -19,7 +26,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { QuestionComponent } from './question/question.component';
 import { QuestionCreateComponent } from './question/question-create.component';
-import { QuestionListComponent, DialogDataExampleDialog } from './question/question-list.component';
+import { QuestionEditComponent } from './question/question-edit.component'
+import { QuestionListComponent,  } from './question/question-list.component';
+import { QuestionViewComponent } from './question/question-view.component';
+import { QuestionDeleteComponent } from './question/question-delete.component';
 import { StructureComponent } from './structure/structure.component';
 import { StructureCreateComponent } from './structure/structure-create.component';
 import { StructureListComponent } from './structure/structure-list.component';
@@ -39,6 +49,7 @@ import { AdminComponent } from './layout/admin/admin.component';
     QuestionComponent,
     QuestionCreateComponent,
     QuestionListComponent,
+    QuestionDeleteComponent,
     StructureComponent,
     StructureCreateComponent,
     StructureListComponent,
@@ -46,11 +57,13 @@ import { AdminComponent } from './layout/admin/admin.component';
     AdminComponent,
     FormsComponent,
     FormStructureComponent,
-    DialogDataExampleDialog
+    QuestionEditComponent,
+    QuestionViewComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     MatButtonModule,
     MatCheckboxModule,
     FormsModule,
@@ -64,6 +77,12 @@ import { AdminComponent } from './layout/admin/admin.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCardModule,
+    MatGridListModule,
+    MatSelectModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatListModule,
     routing
   ],
   providers: [
@@ -72,7 +91,9 @@ import { AdminComponent } from './layout/admin/admin.component';
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    DialogDataExampleDialog,
+    QuestionViewComponent,
+    QuestionEditComponent,
+    QuestionDeleteComponent
   ]
 })
 export class AppModule { }

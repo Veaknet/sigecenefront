@@ -1,0 +1,20 @@
+.mat-dialog-container{
+    margin-top: 1.25rem;
+    
+    position: relative;
+}
+.vertical-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+}
+.mat-dialog-title{
+    background-color: indigo;
+    padding: 7px 16px;
+    color: white;
+    box-shadow: 2px 2px 7px indigo, -2px -2px 7px indigo;
+    border-radius: 5px;
+    margin-top: -2.25rem;
+    /* z-index: 5; */
+    position: relative;
+}
+

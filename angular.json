@@ -21,7 +21,8 @@
               "src/favicon.ico"
             ],
             "styles": [
-              "node_modules/dragula/dist/dragula.css"
+              "node_modules/dragula/dist/dragula.css", 
+              "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": []
           },

@@ -25,11 +25,11 @@ export class QuestionService {
 
         let postData = {
             question:{
-                user_id: question.user_id,
                 question: question.question,
-                type: question.typeQuestion,
+                
                 choice: question.choice
             },
+            type_question_id: question.type_id,
             answers: question.answers    
         }
         
@@ -62,6 +62,20 @@ export class QuestionService {
         return this._http.get<any>(urlQuestion, httpOptions);
     }
 
+    allTypeQuestion(accessToken: string) {
+
+        let urlTypeQuestion = this.url+"api/typequestion";
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+                'Authorization': 'Bearer '+accessToken
+            })
+        };
+
+        return this._http.get<any>(urlTypeQuestion, httpOptions);
+    }
+
     getQuestion(accessToken: string, id: number) {
         let urlQuestion = this.url+"api/questions/"+id;
         
@@ -73,5 +87,41 @@ export class QuestionService {
         };
 
         return this._http.get<any>(urlQuestion, httpOptions);
+    }
+
+    editQuestion(token, question) {
+        console.log('servicio editar pregunta', question);
+        let urlQuestion = this.url+"api/questions/"+question.id;
+
+        let postData = {
+            question:{
+                question: question.question, 
+                choice: question.choice, 
+            },
+            type_question_id: question.type_question_id,
+            answers: question.answers    
+        }
+
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+                'Authorization': 'Bearer '+token
+            })
+        };
+
+        return this._http.put<any>(urlQuestion, postData, httpOptions);
+    }
+
+    deleteQuestion(accessToken: string, id: number) {
+        let urlQuestion = this.url+"api/questions/"+id;
+        
+        const httpOptions = {
+            headers: new HttpHeaders({
+                'Content-Type':  'application/json',
+                'Authorization': 'Bearer '+accessToken
+            })
+        };
+
+        return this._http.delete<any>(urlQuestion, httpOptions);
     }
 }

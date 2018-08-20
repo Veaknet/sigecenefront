@@ -1,8 +1,7 @@
 export class Question {
     constructor(
-        public user_id: number,
         public question: string,
-        public typeQuestion: string,
+        public type_id: number,
         public choice: string,
         public answers: Array<string>
     ) {

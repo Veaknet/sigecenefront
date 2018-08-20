@@ -1,0 +1,10 @@
+table {
+  width: 100%;
+}
+.mat-raised-button{
+    float: right;
+}
+
+.mat-mini-fab {
+    margin-left: 10px;
+}

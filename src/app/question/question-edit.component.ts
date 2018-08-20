@@ -1,17 +1,18 @@
 import { Component, OnInit, Output, Input, EventEmitter,Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { QuestionService } from './question.service';
 import { LoginService } from '../login/login.service';
 import { Question } from './question';
 
 @Component({
-    selector: 'question-create',
-    templateUrl: './question-create.html',
+    selector: 'question-edit',
+    templateUrl: './question-edit.html',
     styleUrls: ['./question-create.component.css'],
     providers: [QuestionService, LoginService]
 })
 
-export class QuestionCreateComponent implements OnInit{
+export class QuestionEditComponent implements OnInit{
     @Output() onAddAnswer = new EventEmitter();
     @Output() returnQuestion = new EventEmitter();
     //@Input() allQuestions;
@@ -31,6 +32,7 @@ export class QuestionCreateComponent implements OnInit{
     //public answers: Array<string> = [];
 
     constructor(
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private _questionService: QuestionService,
         private _loginService: LoginService
     ){
@@ -51,19 +53,8 @@ export class QuestionCreateComponent implements OnInit{
 
     ngOnInit(){
         console.log('El componente question component ha sido cargado!');
-        this.allTypeQuestion();
         //this.getAllTypeQuestion();
-        //console.log('this.data: ',this.data)
-    }
-
-    allTypeQuestion() {
-        console.log('lista de tipo de preguntas');
-        this._questionService.allTypeQuestion(this.token.access_token)
-        .subscribe(
-            response => {
-                this.typeQuestion = response.data;
-                console.log('this.typeQuestion: ',this.typeQuestion);
-            });   
+        console.log('this.data edit: ',this.data)
     }
 
     typeSelect() {
@@ -119,7 +110,7 @@ export class QuestionCreateComponent implements OnInit{
         //console.log('agregar respuestas de preguntas');
         //this.answers = [...this.answers, this.answer];
         //this.refresh();
-        console.log(this.question.answers);
+        //console.log(this.answers);
     }
 
     deleteAnswer(index: number):void {
@@ -134,6 +125,16 @@ export class QuestionCreateComponent implements OnInit{
             questions => {
                 this.allQuestions = questions.data;
                 console.log(this.allQuestions);
+                //localStorage.setItem('questions',JSON.stringify(this.allQuestions));
+            });
+    }
+
+    editQuestion() {
+        console.log(this.data.question);
+        this._questionService.editQuestion(this.token.access_token, this.data.question)
+        .subscribe(
+            response => {
+                console.log('response edit:', response);
                 //localStorage.setItem('questions',JSON.stringify(this.allQuestions));
             });
     }

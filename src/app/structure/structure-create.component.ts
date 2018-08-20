@@ -8,9 +8,11 @@ import { StructureService } from './structure.service';
 import { LoginService } from '../login/login.service';
 import { Structure } from './structure';
 
+
 @Component({
     selector: 'structure-create',
     templateUrl: './structure-create.html',
+    styleUrls: ['./structure-create.component.css'],
     providers: [QuestionService, StructureService, LoginService]
 })
 export class StructureCreateComponent implements OnInit{

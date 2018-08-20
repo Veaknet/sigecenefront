@@ -2,10 +2,15 @@ import { NgModule, Component, OnInit, Output, Input, EventEmitter, ViewChild, In
 import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { NgForm } from '@angular/forms';
+import { QuestionCreateComponent } from './question-create.component';
+import { QuestionEditComponent } from './question-edit.component';
+import { QuestionViewComponent } from './question-view.component';
+import { QuestionDeleteComponent } from './question-delete.component';
 import { QuestionService } from './question.service';
 import { LoginService } from '../login/login.service';
 import { Question } from './question';
 import { DataSource } from '@angular/cdk/table';
+import { ToastrService } from 'ngx-toastr';
 
 export interface Element {
     user_id: number,
@@ -24,13 +29,14 @@ export interface DialogData {
 @Component({
     selector: 'question-list',
     templateUrl: './question-list.html',
+    styleUrls: ['./question-list.component.css'],
     providers: [QuestionService, LoginService]
 })
 
 export class QuestionListComponent implements OnInit{
     dataSource;
-    displayedColumns = [];
-    //displayedColumns: string[] = ['pregunta', 'tipo'];
+    //displayedColumns = [];
+    displayedColumns: string[] = ['question', 'type', 'action'];
     //public dataSource;    
     public title:string;
     public question: Question;
@@ -45,7 +51,7 @@ export class QuestionListComponent implements OnInit{
         value: "Question"
 
       }, {
-        id: "type",
+        id: "type_question",
         value: "Type"
       }, {
         id: "accion",
@@ -55,7 +61,8 @@ export class QuestionListComponent implements OnInit{
     constructor(
         private _questionService: QuestionService,
         private _loginService: LoginService,
-        public dialog: MatDialog
+        public dialog: MatDialog,
+        private toastr: ToastrService
     ){
         //this.identity = this._loginService.getIdentity();
         this.token = this._loginService.getToken();
@@ -70,10 +77,10 @@ export class QuestionListComponent implements OnInit{
 
     ngOnInit(){
         console.log('El componente question component ha sido cargado!');
-        this.displayedColumns = this.columnNames.map(x => x.id);
+        //this.displayedColumns = this.columnNames.map(x => x.id);
         //this.dataSource.paginator = this.paginator;
         this.getAllQuestions();
-        this.createTable();
+        //this.createTable();
     }
 
     getAllQuestions() {
@@ -81,9 +88,9 @@ export class QuestionListComponent implements OnInit{
         .subscribe(
         questions => {
             this.allQuestions = questions.data;
-            let tableArr: Element[] = this.allQuestions;
-            console.log('tableArr:', tableArr);
-            this.dataSource = new MatTableDataSource(tableArr);
+            //let tableArr: Question[] = this.allQuestions;
+            console.log('tableArr:', this.allQuestions);
+            this.dataSource = new MatTableDataSource(this.allQuestions);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
             console.log('result questions:', questions)
@@ -95,43 +102,90 @@ export class QuestionListComponent implements OnInit{
         console.log('id de pregunta para editar: ', id);
     }
 
-    createTable() {
-        /*let tableArr: Element[] = [{ user_id: 1, question: 'Hydrogen', type: 1.0079, choice: 'H' },
-        { user_id: 2, question: 'Helium', type: 4.0026, choice: 'He' },
-        { user_id: 3, question: 'Lithium', type: 6.941, choice: 'Li' },
-        { user_id: 4, question: 'Beryllium', type: 9.0122, choice: 'Be' },
-        { user_id: 5, question: 'Boron', type: 10.811, choice: 'B' },
-        { user_id: 6, question: 'Carbon', type: 12.0107, choice: 'C' }
-        ];*/
-        let tableArr: Element[] = this.allQuestions;
-        console.log('tableArr:', tableArr);
-        this.dataSource = new MatTableDataSource(tableArr);
-        //this.dataSource.sort = this.sort;
-    }
-
     openDialogView(id) {
         this._questionService.getQuestion(this.token.access_token, id)
         .subscribe(
         response => {
             let question = response.data;
             console.log('response:', response);
-            this.dialog.open(DialogDataExampleDialog, {
+            this.dialog.open(QuestionViewComponent, {
                 data: question
             });
         });
+    }
+
+    openDialogEdit(id) {
+        let typeQuestion;
+        this._questionService.allTypeQuestion(this.token.access_token)
+        .subscribe(
+            response => {
+                typeQuestion = response.data;
+            });
         
+        this._questionService.getQuestion(this.token.access_token, id)
+        .subscribe(
+        response => {
+            let question = response.data;
+            console.log('response:', response);
+            this.dialog.open(QuestionEditComponent, {
+                height: '400px',
+                width: '600px',
+                data: {question, typeQuestion}
+            });
+        });
+    }
+
+    openDialogDelete(question) {
+        console.log('borrar pregunta: ', question.id);
+        const dialogRef = this.dialog.open(QuestionDeleteComponent, {});
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+            if(result) {
+                this._questionService.deleteQuestion(this.token.access_token, question.id)
+                .subscribe(
+                response => {
+                    //let question = response.data;
+                    console.log('response.success: ', response.success);
+                    if(response.success) {
+                        this.toastr.success(response.message, 'Toastr fun!');
+                        let index = this.allQuestions.indexOf(question);
+                        console.log('index: ', index);
+                        this.allQuestions.splice(index, 1);
+                        this.dataSource = new MatTableDataSource(this.allQuestions);
+                    }
+                    
+                    console.log('response:', response);
+                    
+                });
+            }
+        });
+        /*this._questionService.deleteQuestion(this.token.access_token, id)
+        .subscribe(
+        response => {
+            let question = response.data;
+            console.log('response:', response);
+            
+        });*/
+    }
+
+    /*openDialogCreate() {
+        console.log('lista de tipo de preguntas');
+        this._questionService.allTypeQuestion(this.token.access_token)
+        .subscribe(
+            response => {
+                let typeQuestion = response.data;
+                this.dialog.open(QuestionCreateComponent, {
+                    height: '400px',
+                    width: '600px',
+                    data: typeQuestion
+                });
+                console.log('this.typeQuestion: ',typeQuestion);
+            });
+        
+    }*/
+
+    applyFilter(filterValue: string) {
+        this.dataSource.filter = filterValue.trim().toLowerCase();
     }
 }
 
-@Component({
-    selector: 'aqqquestion-create',
-    templateUrl: './question-view.html',
-  })
-  export class DialogDataExampleDialog {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
-
-    ngOnInit() {
-        // will log the entire data object
-        console.log('this.data: ',this.data)
-      }
-  }
