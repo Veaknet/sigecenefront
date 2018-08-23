@@ -1,9 +1,55 @@
 <mat-card>
-    <form #structureForm="ngForm" (ngSubmit)="addStructure()" role="form">
-        <mat-form-field class="full-width">
-            <input matInput placeholder="Título de plantilla" value="Sushi" name="name" #name="ngModel" [(ngModel)]="structure.name" required>
-        </mat-form-field>
-        <structure-questions (returnListQuestion)="responseListQuestion($event)"></structure-questions>
-        <input type="submit" value="Guardar Plantilla" class="btn btn-primary"/>
-    </form>            
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="firstFormGroup">
+            <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Agregar Preguntas</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Título de plantilla" formControlName="firstCtrl" required>
+            </mat-form-field>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>queue</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="showCreateQuestion = !showCreateQuestion; showLisQuestions = false">
+                    <mat-icon>dialpad</mat-icon>
+                    <span>Agregar Pregunta Nueva</span>
+                </button>
+                <button mat-menu-item (click)="showLisQuestions = !showLisQuestions; showCreateQuestion = false">
+                    <mat-icon>notifications_off</mat-icon>
+                    <span>Agregar Pregunta Existente</span>
+                </button>
+            </mat-menu>
+            <question-create (returnQuestion)="responseQuestion($event)" *ngIf="showCreateQuestion"></question-create>
+            <structure-questions (returnListQuestion)="responseListQuestion($event)" *ngIf="showLisQuestions"></structure-questions>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step [stepControl]="secondFormGroup">
+            
+            
+            <ng-template matStepLabel>Ordenar preguntas</ng-template>
+            <mat-list role="list" class="half-width">
+                <mat-list-item role="listitem" *ngFor="let question of questionsStructure; let i = index" [attr.data-index]="i">
+                    <mat-icon mat-list-icon>drag_indicator</mat-icon>
+                    <p mat-line>{{question.question}}</p>
+                    <mat-icon (click)="deleteAnswer(i)">delete</mat-icon>
+                </mat-list-item>
+            </mat-list>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+            
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            You are now done.
+            <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>            
 </mat-card>

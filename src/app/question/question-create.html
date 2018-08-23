@@ -1,29 +1,29 @@
 <mat-card>
     <mat-tab-group>
         <mat-tab label="Crear Pregunta">
-            <form #questionForm="ngForm" (ngSubmit)="addQuestion($event)" role="form">     
+            <form #questionForm="ngForm" (ngSubmit)="addQuestion($event); questionForm.reset()" role="form">     
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Agregar pregunta" name="inquiry" #inquiry="ngModel" [(ngModel)]="question.question" required>
+                    <input matInput placeholder="Agregar pregunta" name="inquiry" #inquiry="ngModel" [(ngModel)]="question.question">
                 </mat-form-field>
                 <mat-form-field class="full-width">
-                    <mat-select placeholder="Tipo de pregunta" name="type" #type="ngModel" [(ngModel)]="question.type_id">
+                    <mat-select placeholder="Tipo de pregunta" name="type" #type="ngModel" [(ngModel)]="question.type_question_id">
                         <mat-option *ngFor="let type of typeQuestion" [value]="type.id">
                         {{type.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field class="half-width" *ngIf="question.type_id == 3 || question.type_id == 4">
+                <mat-form-field class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
                     <input matInput placeholder="Agregar respuestas" [type]="text" #answer>
                     <mat-icon matSuffix (click)="addAnswer(answer.value)">add</mat-icon>
                 </mat-form-field>
-                <mat-form-field class="half-width" *ngIf="question.type_id == 3 || question.type_id == 4">
+                <mat-form-field class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
                     <mat-select placeholder="Orden de las Respuestas" name="option" #option="ngModel" [(ngModel)]="question.choice">
                         <mat-option value="V">Vertical</mat-option>
                         <mat-option value="H">Horizontal</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-list role="list" class="half-width" *ngIf="question.type_id == 3 || question.type_id == 4">
+                <mat-list role="list" class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
                     <mat-list-item role="listitem" *ngFor="let answer of question.answers; let i = index" [attr.data-index]="i">
                         <mat-icon mat-list-icon>drag_indicator</mat-icon>
                         <p mat-line>{{answer}}</p>
@@ -38,19 +38,19 @@
                 {{question.question}}
             </div>
             
-            <mat-form-field class="full-width" *ngIf="question.type_id == 1">
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 1">
                 <input matInput placeholder="Respuesta breve" disabled >
             </mat-form-field>
-            <mat-form-field class="full-width" *ngIf="question.type_id == 2">
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 2">
                 <textarea matInput placeholder="Leave a comment"></textarea>
             </mat-form-field>
-            <mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_id == 3">
+            <mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 3">
                 <mat-radio-button *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-radio-button>
             </mat-radio-group>
-            <section class="full-width" [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_id == 4">
+            <section class="full-width" [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 4">
                 <mat-checkbox class="example-margin" *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-checkbox>
             </section>
-            <mat-form-field class="full-width" *ngIf="question.type_id == 5">
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 5">
                 <mat-select placeholder="Favorite food">
                     <mat-option *ngFor="let answer of question.answers" [value]="answer">
                     {{answer}}

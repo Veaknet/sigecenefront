@@ -1,6 +1,7 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute, Params } from '@angular/router'
 import { Route } from '@angular/router/src/config';
+import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {QuestionCreateComponent} from '../question/question-create.component'; 
 import {QuestionViewComponent} from '../question/question-view.component'; 
@@ -10,7 +11,6 @@ import { StructureService } from './structure.service';
 import { LoginService } from '../login/login.service';
 import { Structure } from './structure';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatTableDataSource} from '@angular/material';
 
 export interface PeriodicElement {
     name: string;
@@ -38,8 +38,11 @@ export interface PeriodicElement {
     styleUrls: ['./structure-questions.component.css'],
     providers: [QuestionService, StructureService, LoginService]
 })
+
 export class StructureQuestionsComponent implements OnInit{
     @Output() returnListQuestion = new EventEmitter();
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
 
     displayedColumns: string[] = ['select', 'question', 'action'];
     selection = new SelectionModel(true, []);
@@ -80,12 +83,14 @@ export class StructureQuestionsComponent implements OnInit{
             questions => {
                 this.questions = questions.data;
                 this.dataSource = new MatTableDataSource<PeriodicElement>(questions.data);
+                this.dataSource.paginator = this.paginator;
+
                 for (let i = 0; i < this.questions.length; i++) {
                     this.questions[i].checkbox = false;
                     console.log(this.questions[i]);
                 }
                 console.log(this.questions);
-                localStorage.setItem('questions',JSON.stringify(this.questions));
+                //localStorage.setItem('questions',JSON.stringify(this.questions));
             });
     }
 

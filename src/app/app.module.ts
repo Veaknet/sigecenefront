@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -15,6 +15,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatListModule} from '@angular/material/list';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatMenuModule} from '@angular/material/menu';
 import { ToastrModule } from 'ngx-toastr';
 //import { DragulaModule } from 'dragula';
 //import {HttpClient} from '@angular/common/http';
@@ -67,6 +69,7 @@ import { AdminComponent } from './layout/admin/admin.component';
     MatButtonModule,
     MatCheckboxModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
     //DragulaModule,
@@ -83,6 +86,8 @@ import { AdminComponent } from './layout/admin/admin.component';
     MatTabsModule,
     MatRadioModule,
     MatListModule,
+    MatStepperModule,
+    MatMenuModule,
     routing
   ],
   providers: [
@@ -92,7 +97,6 @@ import { AdminComponent } from './layout/admin/admin.component';
   bootstrap: [AppComponent],
   entryComponents: [
     QuestionViewComponent,
-    QuestionEditComponent,
     QuestionDeleteComponent
   ]
 })

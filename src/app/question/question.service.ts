@@ -29,7 +29,7 @@ export class QuestionService {
                 
                 choice: question.choice
             },
-            type_question_id: question.type_id,
+            type_question_id: question.type_question_id,
             answers: question.answers    
         }
         

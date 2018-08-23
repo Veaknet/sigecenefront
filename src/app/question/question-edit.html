@@ -1,51 +1,62 @@
-<h2 mat-dialog-title class="mat-elevation-z">Esto es una pregunta</h2>
-<mat-dialog-content>
+<mat-card>
     <mat-tab-group>
         <mat-tab label="Crear Pregunta">
-            <div class="example-container">
-                <form #questionForm="ngForm" (ngSubmit)="editQuestion($event)" role="form">
-                    <mat-form-field class="full-width">
-                        <input matInput placeholder="Agregar pregunta" name="inquiry" #inquiry="ngModel" [(ngModel)]="data.question.question" required>
-                    </mat-form-field>
-                    <mat-form-field class="full-width">
-                        <mat-select placeholder="Tipo de pregunta" name="typeQuestion" #typeQuestion="ngModel" [(ngModel)]="data.question.type_question_id">
-                            <mat-option *ngFor="let type of data.typeQuestion" [value]="type.id">
-                            {{type.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-radio-group *ngIf="data.question.type_question_id == 3 || data.question.type_question_id == 4">
-                        <mat-radio-button value="1">Vertical</mat-radio-button>
-                        <mat-radio-button value="2">Horizontal</mat-radio-button>
-                    </mat-radio-group>
-                    <button class="mat-raised-button"(click)="close()">Close</button>
-                    <input type="submit" value="Guardar" class="mat-raised-button mat-primary" [disabled]="!questionForm.form.valid"/>
-                </form>
-            </div>
+            <form #questionForm="ngForm" (ngSubmit)="editQuestion($event)" role="form">     
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Agregar pregunta" name="inquiry" #inquiry="ngModel" [(ngModel)]="question.question">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Tipo de pregunta" name="type" #type="ngModel" [(ngModel)]="question.type_question_id">
+                        <mat-option *ngFor="let type of typeQuestion" [value]="type.id">
+                        {{type.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
+                    <input matInput placeholder="Agregar respuestas" [type]="text" #answer>
+                    <mat-icon matSuffix (click)="addAnswer(answer.value)">add</mat-icon>
+                </mat-form-field>
+                <mat-form-field class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
+                    <mat-select placeholder="Orden de las Respuestas" name="option" #option="ngModel" [(ngModel)]="question.choice">
+                        <mat-option value="V">Vertical</mat-option>
+                        <mat-option value="H">Horizontal</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-list role="list" class="half-width" *ngIf="question.type_question_id == 3 || question.type_question_id == 4">
+                    <mat-list-item role="listitem" *ngFor="let answer of question.answers; let i = index" [attr.data-index]="i">
+                        <mat-icon mat-list-icon>drag_indicator</mat-icon>
+                        <p mat-line>{{answer.answer}}</p>
+                        <mat-icon (click)="deleteAnswer(i)">delete</mat-icon>
+                    </mat-list-item>
+                </mat-list>
+                <input type="submit" value="Guardar Pregunta" class="mat-raised-button" [disabled]="!questionForm.form.valid"/>
+            </form>
         </mat-tab>
-        <mat-tab label="Vista Previa">
-            {{data.question.question}}
-            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 1">
+        <mat-tab label="Vista Previa"> 
+            <div class="full-width">
+                {{question.question}}
+            </div>
+            
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 1">
                 <input matInput placeholder="Respuesta breve" disabled >
             </mat-form-field>
-            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 2">
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 2">
                 <textarea matInput placeholder="Leave a comment"></textarea>
             </mat-form-field>
-            <mat-radio-group *ngIf="data.question.type_question_id == 3">
-                <mat-radio-button value="1">Option 1</mat-radio-button>
-                <mat-radio-button value="2">Option 2</mat-radio-button>
+            <mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 3">
+                <mat-radio-button *ngFor="let answer of question.answers" [value]="answer.id">{{answer.answer}}</mat-radio-button>
             </mat-radio-group>
-            <section class="example-section" *ngIf="data.question.type_question_id == 4">
-                <mat-checkbox class="example-margin">Checked</mat-checkbox>
-                <mat-checkbox class="example-margin">Indeterminate</mat-checkbox>
+            <section class="full-width" [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 4">
+                <mat-checkbox class="example-margin" *ngFor="let answer of question.answers" [value]="answer.answer">{{answer.answer}}</mat-checkbox>
             </section>
-            <mat-form-field class="full-width" *ngIf="data.question.type_question_id == 5">
+            <mat-form-field class="full-width" *ngIf="question.type_question_id == 5">
                 <mat-select placeholder="Favorite food">
-                    <mat-option *ngFor="let answer of data.question.answers" [value]="answer">
+                    <mat-option *ngFor="let answer of question.answers" [value]="answer">
                     {{answer}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </mat-tab>
     </mat-tab-group>
-</mat-dialog-content>
+</mat-card>

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { QuestionService } from './question.service';
 import { LoginService } from '../login/login.service';
 import { Question } from './question';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'question-create',
@@ -32,7 +33,8 @@ export class QuestionCreateComponent implements OnInit{
 
     constructor(
         private _questionService: QuestionService,
-        private _loginService: LoginService
+        private _loginService: LoginService,
+        private toastr: ToastrService
     ){
         this.identity = this._loginService.getIdentity();
         this.token = this._loginService.getToken();
@@ -95,9 +97,17 @@ export class QuestionCreateComponent implements OnInit{
             response => {
                 console.log(response);
                 this.returnQuestion.emit({data: response.data});
+                if(response.success) {
+                    this.toastr.success(response.message, 'Guardar Pregunta');
+                    //this.cleanForm();
+                }else {
+                    this.toastr.error(response.message, 'Error');
+                }
+                
             },
             error => {
                 console.log('mensaje de error');
+                this.toastr.error(error.error.message, 'Error');
                 //console.log(error.message);
                 this.error = error.error.message;
                 console.log(<any>error.error.message);

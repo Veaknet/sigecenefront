@@ -4,10 +4,10 @@
         {{data.question}}
         <form class="example-form">
             <mat-form-field class="example-full-width" *ngIf="data.type_question_id == 1">
-                <input matInput placeholder="Favorite food" disabled>
+                <input matInput placeholder="Respuesta Breve" disabled>
             </mat-form-field>
             <mat-form-field class="example-full-width" *ngIf="data.type_question_id == 2">
-                <textarea matInput placeholder="Leave a comment"></textarea>
+                <textarea matInput placeholder="Parrafo"></textarea>
             </mat-form-field>
             <mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': data.choice === 'V'}" *ngIf="data.type_question_id == 3">
                 <mat-radio-button *ngFor="let answer of data.answers" [value]="answer">{{answer.answer}}</mat-radio-button>

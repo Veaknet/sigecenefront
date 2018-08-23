@@ -147,11 +147,13 @@ export class QuestionListComponent implements OnInit{
                     //let question = response.data;
                     console.log('response.success: ', response.success);
                     if(response.success) {
-                        this.toastr.success(response.message, 'Toastr fun!');
+                        this.toastr.success(response.message, 'Eliminar Pregunta');
                         let index = this.allQuestions.indexOf(question);
                         console.log('index: ', index);
                         this.allQuestions.splice(index, 1);
                         this.dataSource = new MatTableDataSource(this.allQuestions);
+                        this.dataSource.sort = this.sort;
+                        this.dataSource.paginator = this.paginator;
                     }
                     
                     console.log('response:', response);

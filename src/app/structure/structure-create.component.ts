@@ -7,7 +7,7 @@ import { QuestionService } from '../question/question.service';
 import { StructureService } from './structure.service';
 import { LoginService } from '../login/login.service';
 import { Structure } from './structure';
-
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'structure-create',
@@ -16,6 +16,11 @@ import { Structure } from './structure';
     providers: [QuestionService, StructureService, LoginService]
 })
 export class StructureCreateComponent implements OnInit{
+    isLinear = false;
+    showCreateQuestion = false;
+    showLisQuestions = false;
+    firstFormGroup: FormGroup;
+    secondFormGroup: FormGroup;
     public title:string;
     public token;
     public error;
@@ -27,6 +32,7 @@ export class StructureCreateComponent implements OnInit{
     constructor(private _questionService: QuestionService,
         private _structureService: StructureService,
         private _loginService: LoginService,
+        private _formBuilder: FormBuilder
     ){
         this.title = 'Componente de plantillas';
         this.token = this._loginService.getToken();
@@ -39,6 +45,12 @@ export class StructureCreateComponent implements OnInit{
 
     ngOnInit(){
         console.log('El componente plantillas ha sido cargado!');
+        this.firstFormGroup = this._formBuilder.group({
+            firstCtrl: ['', Validators.required]
+        });
+        this.secondFormGroup = this._formBuilder.group({
+            secondCtrl: ['', Validators.required]
+        });
     }
 
     sQuestion() {
