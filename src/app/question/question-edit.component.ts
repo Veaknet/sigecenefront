@@ -30,7 +30,7 @@ export class QuestionEditComponent implements OnInit{
     public error;
     public identity;
     public token;
-    public answer;
+    //public answer;
     //public answers: Array<string> = [];
 
     constructor(
@@ -60,7 +60,7 @@ export class QuestionEditComponent implements OnInit{
         //this.getAllTypeQuestion();
         this.allTypeQuestion();
         //console.log('this.data edit: ',this.data)
-        this.route.params.subscribe( params => this.getQuestion(params) );
+        this.route.params.subscribe( params => this.getQuestion() );
         //this.getQuestion();
     }
 
@@ -103,11 +103,11 @@ export class QuestionEditComponent implements OnInit{
         );
     }
 
-    addAnswer(answer: string):void {
+    addAnswer(answer: any):void {
 
         console.log('agregar respuestas de preguntas:', answer);
         if (answer) {
-            this.question.answers.push({'answer': answer});
+            this.question.answers.push(answer);
         }
         console.log('this.question.answers:', this.question.answers);
         /*this.onAddAnswer.emit({

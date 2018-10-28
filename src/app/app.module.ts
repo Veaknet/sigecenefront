@@ -18,6 +18,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatMenuModule} from '@angular/material/menu';
 import { ToastrModule } from 'ngx-toastr';
+import { DragulaModule } from 'ng2-dragula';
 //import { DragulaModule } from 'dragula';
 //import {HttpClient} from '@angular/common/http';
 
@@ -36,9 +37,12 @@ import { StructureComponent } from './structure/structure.component';
 import { StructureCreateComponent } from './structure/structure-create.component';
 import { StructureListComponent } from './structure/structure-list.component';
 import { StructureQuestionsComponent } from './structure/structure-questions.component';
-import { FormsComponent } from './form/forms.component';
+import { StructureViewComponent } from './structure/structure-view.component';
+import { FormsCreateComponent } from './form/forms-create.component';
 import { FormStructureComponent } from './form/form-structure.component';
 import { AdminComponent } from './layout/admin/admin.component';
+import { PollComponent } from './poll/poll.component';
+//import { DragAndDropModule } from 'angular-draggable-droppable';
 //import { LoginService } from './login/login.service';
 //import { UserService } from './services/user.services';
 
@@ -56,11 +60,13 @@ import { AdminComponent } from './layout/admin/admin.component';
     StructureCreateComponent,
     StructureListComponent,
     StructureQuestionsComponent,
+    StructureViewComponent,
     AdminComponent,
-    FormsComponent,
+    FormsCreateComponent,
     FormStructureComponent,
     QuestionEditComponent,
-    QuestionViewComponent
+    QuestionViewComponent,
+    PollComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +78,9 @@ import { AdminComponent } from './layout/admin/admin.component';
     ReactiveFormsModule,
     HttpModule,
     HttpClientModule,
+    DragulaModule,
     //DragulaModule,
+    //DragAndDropModule.forRoot(),
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,

@@ -1,18 +1,31 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core'
-import { Router, ActivatedRoute, Params } from '@angular/router'
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Route } from '@angular/router/src/config';
 import {QuestionCreateComponent} from '../question/question-create.component'; 
 import { Question } from '../question/question';
 import { StructureService } from '../structure/structure.service';
 import { LoginService } from '../login/login.service';
+import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
+import {SelectionModel} from '@angular/cdk/collections';
 
 @Component({
     selector: 'form-structure',
     templateUrl: './form-structure.html',
+    styleUrls: ['./form-structure.component.css'],
     providers: [StructureService, LoginService]
 })
+
 export class FormStructureComponent implements OnInit{
+    @ViewChild(MatPaginator) paginator: MatPaginator;
     @Output() returnListQuestion = new EventEmitter();
+
+    displayedColumns: string[] = ['select', 'name', 'action'];
+    selection = new SelectionModel(true, []);
+
+    dataSource;
+    //columnsToDisplay = ['name'];
+    //expandedElement;
 
     public title:string;
     public token;
@@ -23,12 +36,13 @@ export class FormStructureComponent implements OnInit{
         private _loginService: LoginService,
     ){
         this.title = 'Componente de plantillas';
-        this.token = this._loginService.getToken();
-        this.getStructures();
+        this.token = this._loginService.getToken();  
     }
 
     ngOnInit(){
         console.log('El componente plantillas ha sido cargado!');
+        this.getStructures();
+        this.dataSource.paginator = this.paginator;
     }
 
     getStructures() {
@@ -36,7 +50,10 @@ export class FormStructureComponent implements OnInit{
         .subscribe(
             structures => {
                 this.structures = structures.data;
+                this.dataSource = structures.data;
+                this.dataSource.paginator = this.paginator;
                 console.log("this.structures. ",this.structures);
+                console.log("this.dataSource. ",this.dataSource);
             });
     }
 

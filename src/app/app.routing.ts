@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { FormsComponent } from './form/forms.component';
+import { FormsCreateComponent } from './form/forms-create.component';
 import { QuestionComponent } from './question/question.component';
 import { QuestionCreateComponent } from './question/question-create.component';
 import { QuestionEditComponent } from './question/question-edit.component';
@@ -15,7 +15,7 @@ const appRoutes: Routes = [
     {path:'', component: LoginComponent},
     {path:'login', component: LoginComponent},
     {path: 'register', component: RegisterComponent},
-    {path: 'forms', component: FormsComponent},
+    {path: 'forms', component: FormsCreateComponent},
     {path: 'question', component: QuestionComponent},
     {path: 'questioncreate', component: QuestionCreateComponent},
     {path: 'questionedit/:id', component: QuestionEditComponent},

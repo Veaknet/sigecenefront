@@ -8,6 +8,7 @@ import { StructureService } from './structure.service';
 import { LoginService } from '../login/login.service';
 import { Structure } from './structure';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'structure-create',
@@ -18,7 +19,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 export class StructureCreateComponent implements OnInit{
     isLinear = false;
     showCreateQuestion = false;
-    showLisQuestions = false;
+    showListQuestions = false;
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
     public title:string;
@@ -32,7 +33,8 @@ export class StructureCreateComponent implements OnInit{
     constructor(private _questionService: QuestionService,
         private _structureService: StructureService,
         private _loginService: LoginService,
-        private _formBuilder: FormBuilder
+        private _formBuilder: FormBuilder,
+        private toastr: ToastrService
     ){
         this.title = 'Componente de plantillas';
         this.token = this._loginService.getToken();
@@ -46,7 +48,7 @@ export class StructureCreateComponent implements OnInit{
     ngOnInit(){
         console.log('El componente plantillas ha sido cargado!');
         this.firstFormGroup = this._formBuilder.group({
-            firstCtrl: ['', Validators.required]
+            name: ['', Validators.required]
         });
         this.secondFormGroup = this._formBuilder.group({
             secondCtrl: ['', Validators.required]
@@ -92,14 +94,24 @@ export class StructureCreateComponent implements OnInit{
     addStructure() {
         console.log('guardar structura');
         console.log('this.questionsStructure: ', this.questionsStructure);
+        console.log('firstFormGroup: ', this.firstFormGroup);
+
         for (let i = 0; i < this.questionsStructure.length; i++) {
             this.structure.questions.push(this.questionsStructure[i].id);
         }
         console.log('this.structure.questions: ', this.structure.questions);
-
+        console.log('this.structure: ', this.firstFormGroup.get('name').value );
+        this.structure.name = this.firstFormGroup.get('name').value;
+        console.log('this.structure: ', this.structure );
         this._structureService.addStructure(this.structure, this.token.access_token).subscribe(
             response => {
                 console.log('response: ', response);
+                if(response.success) {
+                    this.toastr.success(response.message, 'Guardar Plantilla');
+                    //this.cleanForm();
+                }else {
+                    this.toastr.error(response.message, 'Error');
+                }
             },
             error => {
                 console.log('mensaje de error');

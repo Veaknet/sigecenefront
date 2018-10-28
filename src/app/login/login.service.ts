@@ -21,7 +21,7 @@ export class LoginService {
         let postData = {
             grant_type: "password",
             client_id: '5',
-            client_secret: "yy8rcK8MReQ4rxAVv6wz7Ke9xtsU4qJzzY22wbiZ",
+            client_secret: "B5ZUquBHqMkpxBS2Upn8mqxfmKnDf1OUEP4PnJe8",
             username: user.email,
             password: user.password,
             scope: ""

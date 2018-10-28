@@ -19,13 +19,19 @@ export class LoginComponent implements OnInit{
     public identity;
     public token;
     public error;
-
+    visible=false;
     constructor(private _route: ActivatedRoute, private _router: Router, private _loginService: LoginService){
+        if(this._loginService.getIdentity()){
+            window.location.href = '/forms';
+        }else{
+            this.visible=true;
+        }
         this.title = 'Componente de login';
         this.user = {
             "email":"",
             "password":""
         }
+        //console.log(this._loginService.getIdentity())
         /*this._userService.getAccessToken()
         .subscribe(data => {
             this.getUsers(data.access_token)

@@ -90,6 +90,9 @@ export class QuestionListComponent implements OnInit{
             this.allQuestions = questions.data;
             //let tableArr: Question[] = this.allQuestions;
             console.log('tableArr:', this.allQuestions);
+            let prueba = this.allQuestions.map(question => console.log(question));
+            //let prueba = this.allQuestions.map(question => question.type_question_id = question.type_question.name);
+            //console.log('variable prueba: ', prueba);
             this.dataSource = new MatTableDataSource(this.allQuestions);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;

@@ -4,23 +4,23 @@
             <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Agregar Preguntas</ng-template>
             <mat-form-field>
-                <input matInput placeholder="Título de plantilla" formControlName="firstCtrl" required>
+                <input matInput placeholder="Título de plantilla" formControlName="name" required>
             </mat-form-field>
             <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>queue</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="showCreateQuestion = !showCreateQuestion; showLisQuestions = false">
+                <button mat-menu-item (click)="showCreateQuestion = !showCreateQuestion; showListQuestions = false">
                     <mat-icon>dialpad</mat-icon>
                     <span>Agregar Pregunta Nueva</span>
                 </button>
-                <button mat-menu-item (click)="showLisQuestions = !showLisQuestions; showCreateQuestion = false">
+                <button mat-menu-item (click)="showListQuestions = !showListQuestions; showCreateQuestion = false">
                     <mat-icon>notifications_off</mat-icon>
                     <span>Agregar Pregunta Existente</span>
                 </button>
             </mat-menu>
             <question-create (returnQuestion)="responseQuestion($event)" *ngIf="showCreateQuestion"></question-create>
-            <structure-questions (returnListQuestion)="responseListQuestion($event)" *ngIf="showLisQuestions"></structure-questions>
+            <structure-questions (returnListQuestion)="responseListQuestion($event)" *ngIf="showListQuestions"></structure-questions>
             <div>
                 <button mat-button matStepperNext>Next</button>
             </div>
@@ -29,8 +29,9 @@
         <mat-step [stepControl]="secondFormGroup">
             
             
-            <ng-template matStepLabel>Ordenar preguntas</ng-template>
-            <mat-list role="list" class="half-width">
+            <ng-template matStepLabel>Ordenar Preguntas</ng-template>
+
+            <mat-list role="list" class="half-width" dragula="QUESTIONSSTRUCTURE" [(dragulaModel)]="questionsStructure">
                 <mat-list-item role="listitem" *ngFor="let question of questionsStructure; let i = index" [attr.data-index]="i">
                     <mat-icon mat-list-icon>drag_indicator</mat-icon>
                     <p mat-line>{{question.question}}</p>
@@ -44,11 +45,36 @@
             
         </mat-step>
         <mat-step>
-            <ng-template matStepLabel>Done</ng-template>
-            You are now done.
+            <ng-template matStepLabel>Ver y Guardar</ng-template>
+            <div *ngFor="let question of questionsStructure; let i = index">
+                <div class="full-width">
+                    {{question.question}}
+                </div>
+
+                <mat-form-field class="full-width" *ngIf="question.type_question_id == 1">
+                    <input matInput placeholder="Respuesta breve" disabled >
+                </mat-form-field>
+                <mat-form-field class="full-width" *ngIf="question.type_question_id == 2">
+                    <textarea matInput placeholder="Parrafo"></textarea>
+                </mat-form-field>
+                <mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 3">
+                    <mat-radio-button *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-radio-button>
+                </mat-radio-group>
+                <section class="full-width" [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 4">
+                    <mat-checkbox class="example-margin" *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-checkbox>
+                </section>
+                <mat-form-field class="full-width" *ngIf="question.type_question_id == 5">
+                    <mat-select placeholder="Favorite food">
+                        <mat-option *ngFor="let answer of question.answers" [value]="answer">
+                        {{answer}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
             <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-button (click)="addStructure()">Guardar</button>
             </div>
         </mat-step>
     </mat-horizontal-stepper>            

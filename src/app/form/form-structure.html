@@ -1,65 +1,38 @@
-<div class="row">
-    <div class="col-6">
-        <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Responsive Hover Table</h3>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" >
+        
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selectToggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+        </td>
+        </ng-container>
 
-            <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Plantilla </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
 
-                <div class="input-group-append">
-                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                </div>
-            </div>
-            </div>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body table-responsive p-0">
-            <table class="table table-hover">
-            <tr>
-                <th>Pregunta</th>
-                <th></th>
-            </tr>
-            <tr *ngFor="let structure of structures; let i = index;">
-                <td>
-                    <label>
-                        <input
-                        class="minimal"
-                        type="checkbox"
-                        id="structure{{structure.id}}"
-                        name="structure"
-                        (change)="onCheckboxChange($event,question)"
-                        [checked]=""
-                        >
-                        {{structure.name}}
-                    </label>
-                    
-                </td>
-                <td><i class="fa fa-eye"></i></td>
-            </tr>
-            </table>
-        </div>
-        <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-    <div class="col-6">
-       <!-- <ul class="todo-list" [dragula]='"list-questions"' [dragulaModel]='questionsStructure' >-->
-            <ul class="todo-list">
-            <li *ngFor="let questionList of questionsStructure; let i = index;" [attr.data-index]="i">
-                <span class="handle">
-                <i class="fa fa-ellipsis-v"></i>
-                <i class="fa fa-ellipsis-v"></i>
-                </span>
-                <input type="checkbox" value="" name="">
-                <span class="text">{{questionList.question}}</span>
-                <small class="badge badge-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                <div class="tools">
-                <i class="fa fa-edit"></i>
-                <i class="fa fa-trash-o" (click)="deleteAnswer(i)"></i>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div><!-- /.row -->
+        <!-- Weight Column -->
+        <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Acción </th>
+        <td mat-cell *matCellDef="let element"> <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>visibility</mat-icon></button> </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            >
+        </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

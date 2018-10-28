@@ -1,0 +1,23 @@
+<div class="full-width">
+    {{question.question}}
+</div>
+
+<mat-form-field class="full-width" *ngIf="question.type_question_id == 1">
+    <input matInput placeholder="Respuesta breve" disabled >
+</mat-form-field>
+<mat-form-field class="full-width" *ngIf="question.type_question_id == 2">
+    <textarea matInput placeholder="Leave a comment"></textarea>
+</mat-form-field>
+<mat-radio-group class="full-width " [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 3">
+    <mat-radio-button *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-radio-button>
+</mat-radio-group>
+<section class="full-width" [ngClass]="{'vertical-radio-group': question.choice === 'V'}" *ngIf="question.type_question_id == 4">
+    <mat-checkbox class="example-margin" *ngFor="let answer of question.answers" [value]="answer">{{answer}}</mat-checkbox>
+</section>
+<mat-form-field class="full-width" *ngIf="question.type_question_id == 5">
+    <mat-select placeholder="Favorite food">
+        <mat-option *ngFor="let answer of question.answers" [value]="answer">
+        {{answer}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

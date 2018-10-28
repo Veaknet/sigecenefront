@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <button mat-raised-button [routerLink]="['/structurecreate']">Agregar Plantilla</button>
+  <div class="mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="{background: 'indigo', color:'#FFF' }" > {{column.value}} </mat-header-cell>
+        <div *ngIf="column.id == 'accion'">
+          <mat-cell *matCellDef="let element">
+            <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>visibility</mat-icon></button>
+            <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>create</mat-icon></button> 
+            <button mat-mini-fab (click)="openDialogView(element.id)"><mat-icon>restore_from_trash</mat-icon></button>
+          </mat-cell>
+        </div>
+        <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns" [ngStyle]="{background: 'indigo', color:'#FFF' }" ></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</mat-card>

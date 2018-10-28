@@ -83,6 +83,7 @@ export class StructureQuestionsComponent implements OnInit{
             questions => {
                 this.questions = questions.data;
                 this.dataSource = new MatTableDataSource<PeriodicElement>(questions.data);
+                this.dataSource.sort = this.sort;
                 this.dataSource.paginator = this.paginator;
 
                 for (let i = 0; i < this.questions.length; i++) {

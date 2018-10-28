@@ -1,0 +1,90 @@
+<mat-card>
+<button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+  {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button>
+<mat-vertical-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Encabezado</ng-template>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Titulo de la Encuesta" formControlName="title" required>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Descripción" formControlName="description" required>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Imagen" formControlName="image" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>queue</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="showCreateQuestion = !showCreateQuestion; showListQuestions = false; showListStructures = false">
+            <mat-icon>dialpad</mat-icon>
+            <span>Agregar Pregunta Nueva</span>
+        </button>
+        <button mat-menu-item (click)="showListQuestions = !showListQuestions; showCreateQuestion = false; showListStructures = false">
+            <mat-icon>notifications_off</mat-icon>
+            <span>Agregar Pregunta Existente</span>
+        </button>
+        <button mat-menu-item (click)="showListStructures = !showListStructures; showCreateQuestion = false; showListQuestions = false">
+            <mat-icon>notifications_off</mat-icon>
+            <span>Agregar Plantilla</span>
+        </button>
+        <button mat-menu-item (click)="showListQuestions = !showListQuestions; showCreateQuestion = false">
+            <mat-icon>notifications_off</mat-icon>
+            <span>Copiar Encuesta</span>
+        </button>
+    </mat-menu>
+    <question-create (returnQuestion)="responseQuestion($event)" *ngIf="showCreateQuestion"></question-create>
+    <structure-questions (returnListQuestion)="responseListQuestion($event)" *ngIf="showListQuestions"></structure-questions>
+    <form-structure *ngIf="showListStructures"></form-structure>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Ordenar Preguntas</ng-template>
+      <div class="card-body">
+                <ul class="todo-list">
+                  <li *ngFor="let question of questions" [value]="question.id">
+                    <!-- drag handle -->
+                    <span class="handle">
+                      <i class="fa fa-ellipsis-v"></i>
+                      <i class="fa fa-ellipsis-v"></i>
+                    </span>
+                    <!-- checkbox -->
+                    <input type="checkbox" value="" name="">
+                    <!-- todo text -->
+                    <span class="text">{{question.question}}</span>
+                    <!-- Emphasis label -->
+                    <small class="badge badge-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
+                    <!-- General tools such as edit or delete-->
+                    <div class="tools">
+                      <i class="fa fa-edit"></i>
+                      <i class="fa fa-trash-o"></i>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
+</mat-card>
